@@ -2,12 +2,12 @@
 
 A Go client for the [DNSPod API](https://www.dnspod.cn/docs/index.html).
 
-Borrowed from : [dnsimple](https://github.com/weppos/dnsimple-go/dnsimple)
+Thank you : [dnspod-go](https://github.com/decker502/dnspod-go)
 
 ## Installation
 
 ```
-$ go get github.com/decker502/dnspod-go
+$ go get github.com/googolmo/dnspod-go
 ```
 
 
@@ -23,7 +23,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/decker502/dnspod-go"
+	"github.com/googolmo/dnspod-go"
 )
 
 func main() {
