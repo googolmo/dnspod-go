@@ -1,35 +1,46 @@
 package dnspod
 
 import (
+	"encoding/json"
 	"fmt"
 )
 
+// Record is struct for https://www.dnspod.cn/docs/records.html
 type Record struct {
-	ID            string `json:"id,omitempty"`
-	Name          string `json:"name,omitempty"`
-	Line          string `json:"line,omitempty"`
-	LineID        string `json:"line_id,omitempty"`
-	Type          string `json:"type,omitempty"`
-	TTL           string `json:"ttl,omitempty"`
-	Value         string `json:"value,omitempty"`
-	MX            string `json:"mx,omitempty"`
-	Enabled       string `json:"enabled,omitempty"`
-	Status        string `json:"status,omitempty"`
-	MonitorStatus string `json:"monitor_status,omitempty"`
-	Remark        string `json:"remark,omitempty"`
-	UpdateOn      string `json:"updated_on,omitempty"`
-	UseAQB        string `json:"use_aqb,omitempty"`
+	ID            json.Number `json:"id,omitempty"`
+	Name          string      `json:"name,omitempty"`
+	Line          string      `json:"line,omitempty"`
+	LineID        string      `json:"line_id,omitempty"`
+	Type          string      `json:"type,omitempty"`
+	TTL           string      `json:"ttl,omitempty"`
+	Value         string      `json:"value,omitempty"`
+	MX            string      `json:"mx,omitempty"`
+	Enabled       string      `json:"enabled,omitempty"`
+	Status        string      `json:"status,omitempty"`
+	MonitorStatus string      `json:"monitor_status,omitempty"`
+	Remark        string      `json:"remark,omitempty"`
+	UpdateOn      string      `json:"updated_on,omitempty"`
+	UseAQB        string      `json:"use_aqb,omitempty"`
+}
+
+// RecordInfo is info struct info https://www.dnspod.cn/docs/records.html
+type RecordInfo struct {
+	SubDomains  json.Number `json:"sub_domains,omitempty"`
+	RecordTotal json.Number `json:"record_total,omitempty"`
+	RecordsNum  json.Number `json:"records_num,omitempty"`
 }
 
 type recordsWrapper struct {
 	Status  Status     `json:"status"`
-	Info    DomainInfo `json:"info"`
+	Info    RecordInfo `json:"info"`
+	Domain  Domain     `json:"domain"`
 	Records []Record   `json:"records"`
 }
 
 type recordWrapper struct {
 	Status Status     `json:"status"`
-	Info   DomainInfo `json:"info"`
+	Info   RecordInfo `json:"info"`
+	Domain Domain     `json:"domain"`
 	Record Record     `json:"record"`
 }
 
@@ -41,7 +52,7 @@ func recordAction(action string) string {
 	return "Record.List"
 }
 
-// List the domain records.
+// ListRecords is the list of domain records.
 //
 // dnspod API docs: https://www.dnspod.cn/docs/records.html#record-list
 func (s *DomainsService) ListRecords(domainID string, recordName string) ([]Record, *Response, error) {

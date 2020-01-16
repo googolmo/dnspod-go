@@ -33,6 +33,24 @@ func TestDomainsService_ListRecords_all(t *testing.T) {
 		testMethod(t, r, "POST")
 		fmt.Fprint(w, `{
 			"status": {"code":"1","message":""},
+			"domain": {
+				"id": "12600793",
+				"name": "example.com",
+				"punycode": "example.com",
+				"grade": "DP_Free",
+				"owner": "mailbox@example.com",
+				"ext_status": "dnserror",
+				"ttl": 600,
+				"dnspod_ns": [
+					"ns3.dnsv5.com",
+					"ns4.dnsv5.com"
+				]
+			},
+			"info": {
+				"sub_domains": "7",
+				"record_total": "4",
+				"records_num": 3
+			},
 			"records":[
 				{"id":"44146112", "name":"yizerowwwww"},
 				{"id":"44146112", "name":"yizerowwwww"}
@@ -59,6 +77,24 @@ func TestDomainsService_ListRecords_subdomain(t *testing.T) {
 		testMethod(t, r, "POST")
 		fmt.Fprint(w, `{
 			"status": {"code":"1","message":""},
+			"domain": {
+				"id": 12600793,
+				"name": "example.com",
+				"punycode": "example.com",
+				"grade": "DP_Free",
+				"owner": "mailbox@example.com",
+				"ext_status": "dnserror",
+				"ttl": 600,
+				"dnspod_ns": [
+					"ns3.dnsv5.com",
+					"ns4.dnsv5.com"
+				]
+			},
+			"info": {
+				"sub_domains": "7",
+				"record_total": "4",
+				"records_num": 3
+			},
 			"records":[
 				{"id":"44146112", "name":"yizerowwwww"},
 				{"id":"44146112", "name":"yizerowwwww"}

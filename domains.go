@@ -7,6 +7,17 @@ import (
 	// "time"
 )
 
+const (
+	// DomainStatusEnable 状态 正常
+	DomainStatusEnable = "enable"
+	// DomainStatusPause 状态 已暂停解析
+	DomainStatusPause = "pause"
+	// DomainStatusSpam 状态 已被封禁
+	DomainStatusSpam = "spam"
+	// DomainStatusLock 状态 已被锁定
+	DomainStatusLock = "lock"
+)
+
 // DomainsService handles communication with the domain related
 // methods of the dnspod API.
 //
@@ -15,42 +26,45 @@ type DomainsService struct {
 	client *Client
 }
 
+// DomainInfo is base model in Domains Response
 type DomainInfo struct {
-	DomainTotal   interface{} `json:"domain_total,omitempty"`
-	AllTotal      interface{} `json:"all_total,omitempty"`
-	MineTotal     interface{} `json:"mine_total,omitempty"`
-	ShareTotal    interface{} `json:"share_total,omitempty"`
-	VipTotal      interface{} `json:"vip_total,omitempty"`
-	IsMarkTotal   interface{} `json:"ismark_total,omitempty"`
-	PauseTotal    interface{} `json:"pause_total,omitempty"`
-	ErrorTotal    interface{} `json:"error_total,omitempty"`
-	LockTotal     interface{} `json:"lock_total,omitempty"`
-	SpamTotal     interface{} `json:"spam_total,omitempty"`
-	VipExpire     interface{} `json:"vip_expire,omitempty"`
-	ShareOutTotal interface{} `json:"share_out_total,omitempty"`
+	DomainTotal   json.Number `json:"domain_total,omitempty"`
+	AllTotal      json.Number `json:"all_total,omitempty"`
+	MineTotal     json.Number `json:"mine_total,omitempty"`
+	ShareTotal    json.Number `json:"share_total,omitempty"`
+	VipTotal      json.Number `json:"vip_total,omitempty"`
+	IsMarkTotal   json.Number `json:"ismark_total,omitempty"`
+	PauseTotal    json.Number `json:"pause_total,omitempty"`
+	ErrorTotal    json.Number `json:"error_total,omitempty"`
+	LockTotal     json.Number `json:"lock_total,omitempty"`
+	SpamTotal     json.Number `json:"spam_total,omitempty"`
+	VipExpire     json.Number `json:"vip_expire,omitempty"`
+	ShareOutTotal json.Number `json:"share_out_total,omitempty"`
 }
 
+// Domain struct for domain response
 type Domain struct {
 	ID               json.Number `json:"id,omitempty"`
 	Name             string      `json:"name,omitempty"`
 	PunyCode         string      `json:"punycode,omitempty"`
 	Grade            string      `json:"grade,omitempty"`
 	GradeTitle       string      `json:"grade_title,omitempty"`
+	GradeNs          []string    `json:"grade_ns"`
 	Status           string      `json:"status,omitempty"`
 	ExtStatus        string      `json:"ext_status,omitempty"`
-	Records          string      `json:"records,omitempty"`
+	Records          json.Number `json:"records,omitempty"`
 	GroupID          json.Number `json:"group_id,omitempty"`
 	IsMark           string      `json:"is_mark,omitempty"`
 	Remark           string      `json:"remark,omitempty"`
-	IsVIP            string      `json:"is_vip,omitempty"`
 	SearchenginePush string      `json:"searchengine_push,omitempty"`
 	UserID           string      `json:"user_id,omitempty"`
 	CreatedOn        string      `json:"created_on,omitempty"`
 	UpdatedOn        string      `json:"updated_on,omitempty"`
-	TTL              string      `json:"ttl,omitempty"`
+	TTL              json.Number `json:"ttl,omitempty"`
 	CNameSpeedUp     string      `json:"cname_speedup,omitempty"`
 	Owner            string      `json:"owner,omitempty"`
 	AuthToAnquanBao  bool        `json:"auth_to_anquanbao,omitempty"`
+	IsVIP            string      `json:"is_vip,omitempty"`
 }
 
 type domainListWrapper struct {

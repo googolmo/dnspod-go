@@ -34,19 +34,19 @@ func TestDomainsService_List(t *testing.T) {
 			"status": {"code":"1","message":""},
 			"info": {
 				"share_total": 0,
-				"vip_total": 0,
-				"ismark_total": 0
+				"vip_total": 2,
+				"ismark_total": 3, 
 			},
 			"domains": [
 				{
 					"id": 2238269,
-					"status": "enable"
-
+					"status": "enable",
+					"group_id": 9
 				},
 				{
 					"id": 10360095,
-					"status": "enable"
-
+					"status": "enable",
+					"group_id": 9
 				}
 			]}`)
 	})
@@ -57,7 +57,7 @@ func TestDomainsService_List(t *testing.T) {
 		t.Errorf("Domains.List returned error: %v", err)
 	}
 
-	want := []Domain{{ID: "2238269", Status: "enable"}, {ID: "10360095", Status: "enable"}}
+	want := []Domain{{ID: "2238269", Status: "enable", GroupID: "9"}, {ID: "10360095", Status: "enable", GroupID: "9"}}
 	if !reflect.DeepEqual(domains, want) {
 		t.Errorf("Domains.List returned %+v, want %+v", domains, want)
 	}
@@ -78,9 +78,9 @@ func TestDomainsService_List_Ambiguous_Value(t *testing.T) {
 			},
 			"domains": [
 				{
-					"id": 2238269,
+					"id": "2238269",
 					"status": "enable",
-					"group_id": 9
+					"group_id": 8 
 				},
 				{
 					"id": 10360095,
@@ -96,7 +96,7 @@ func TestDomainsService_List_Ambiguous_Value(t *testing.T) {
 		t.Errorf("Domains.List returned error: %v", err)
 	}
 
-	want := []Domain{{ID: "2238269", Status: "enable", GroupID: "9"}, {ID: "10360095", Status: "enable", GroupID: "9"}}
+	want := []Domain{{ID: "2238269", Status: "enable", GroupID: "8"}, {ID: "10360095", Status: "enable", GroupID: "9"}}
 	if !reflect.DeepEqual(domains, want) {
 		t.Errorf("Domains.List returned %+v, want %+v", domains, want)
 	}

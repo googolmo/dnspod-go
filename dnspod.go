@@ -27,6 +27,7 @@ const (
 
 // dnspod API docs: https://www.dnspod.cn/docs/info.html
 
+// CommonParams for request
 type CommonParams struct {
 	LoginToken   string
 	Format       string
@@ -59,15 +60,17 @@ func newPayLoad(params CommonParams) url.Values {
 	return p
 }
 
+// Status struct for API response
 type Status struct {
 	Code      string `json:"code,omitempty"`
 	Message   string `json:"message,omitempty"`
 	CreatedAt string `json:"created_at,omitempty"`
 }
 
+// Client for request
 type Client struct {
-	// HTTP client used to communicate with the API.
-	HttpClient *http.Client
+	// HTTPClient used to communicate with the API.
+	HTTPClient *http.Client
 
 	// CommonParams used communicating with the dnspod API.
 	CommonParams CommonParams
@@ -106,7 +109,7 @@ func NewClient(CommonParams CommonParams) *Client {
 		},
 	}
 
-	c := &Client{HttpClient: &cli, CommonParams: CommonParams, BaseURL: baseURL, UserAgent: userAgent}
+	c := &Client{HTTPClient: &cli, CommonParams: CommonParams, BaseURL: baseURL, UserAgent: userAgent}
 	c.Domains = &DomainsService{client: c}
 	return c
 
@@ -130,20 +133,20 @@ func (client *Client) NewRequest(method, path string, payload url.Values) (*http
 	return req, nil
 }
 
-func (c *Client) get(path string, v interface{}) (*Response, error) {
-	return c.Do("GET", path, nil, v)
+func (client *Client) get(path string, v interface{}) (*Response, error) {
+	return client.Do(http.MethodGet, path, nil, v)
 }
 
-func (c *Client) post(path string, payload url.Values, v interface{}) (*Response, error) {
-	return c.Do("POST", path, payload, v)
+func (client *Client) post(path string, payload url.Values, v interface{}) (*Response, error) {
+	return client.Do(http.MethodPost, path, payload, v)
 }
 
-func (c *Client) put(path string, payload url.Values, v interface{}) (*Response, error) {
-	return c.Do("PUT", path, payload, v)
+func (client *Client) put(path string, payload url.Values, v interface{}) (*Response, error) {
+	return client.Do(http.MethodPut, path, payload, v)
 }
 
-func (c *Client) delete(path string, payload url.Values) (*Response, error) {
-	return c.Do("DELETE", path, payload, nil)
+func (client *Client) delete(path string, payload url.Values) (*Response, error) {
+	return client.Do(http.MethodDelete, path, payload, nil)
 }
 
 // Do sends an API request and returns the API response.
@@ -151,13 +154,13 @@ func (c *Client) delete(path string, payload url.Values) (*Response, error) {
 // or returned as an error if an API error has occurred.
 // If v implements the io.Writer interface, the raw response body will be written to v,
 // without attempting to decode it.
-func (c *Client) Do(method, path string, payload url.Values, v interface{}) (*Response, error) {
-	req, err := c.NewRequest(method, path, payload)
+func (client *Client) Do(method, path string, payload url.Values, v interface{}) (*Response, error) {
+	req, err := client.NewRequest(method, path, payload)
 	if err != nil {
 		return nil, err
 	}
 
-	res, err := c.HttpClient.Do(req)
+	res, err := client.HTTPClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
